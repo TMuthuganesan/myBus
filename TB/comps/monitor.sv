@@ -11,7 +11,12 @@ class myBusMon extends uvm_monitor;
   
   function void build_phase (uvm_phase phase);
     super.build_phase(phase);
-    pkt         = myPkt::type_id::create("pkt",this);
+    //It is better to create packet everytime it is needed during run_phase, than
+    //creating here once for all. With one pkt object, there is a chance of it getting
+    //overwritten while looping through with the consecutive pkt, as the handle remains
+    //the same. 
+    //pkt         = myPkt::type_id::create("pkt",this);
+    
     //This TLM port need not be create using create factory method, as it is being used only between
     //this monitor and this scoreboard. There is not going to be reuse of this port somewhere else.
     //As there will be no factory overriding, no create is required and a simple new() would do.
@@ -26,6 +31,7 @@ class myBusMon extends uvm_monitor;
       if (myVif.sel)
       begin
         `uvm_info(get_name(),"Pkt found, starting to collect data",UVM_LOW)
+        pkt         = myPkt::type_id::create("pkt",this);
         if(payldCnt == 0)
         begin
           pkt.mode    = myVif.mode;

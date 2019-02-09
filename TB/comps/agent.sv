@@ -41,6 +41,13 @@ class myAgnt extends uvm_agent;
     super.connect_phase(phase);
     this.drvr.seq_item_port.connect (this.sqncr.seq_item_export);
     this.opMon.mbxMon2Scb.connect (this.scb.mbxOpMon2ScbFifo.analysis_export);
+    //The above cannot be connected as below. These give loading error but no compile error while running.
+    //The error from questa below -
+    //uvm_test_top.env.agnt.sqncr.seq_item_export [Connection Error] Cannot call an imp port's connect method.
+    //An imp is connected only to the component passed in its constructor. (You attempted to bind this imp to
+    //uvm_test_top.env.agnt.drvr.seq_item_port)
+    //this.sqncr.seq_item_export.connect (this.drvr.seq_item_port);    
+    //this.scb.mbxOpMon2ScbFifo.analysis_export.connect (this.opMon.mbxMon2Scb);
     this.ipMon.mbxMon2Scb.connect (this.scb.mbxIpMon2ScbFifo.analysis_export);
   endfunction
 endclass
