@@ -8,6 +8,7 @@ package myPkg;
   `include "driver.sv"
   `include "monitor.sv"
   `include "scoreboard.sv"
+  `include "covMonitor.sv"
   `include "agent.sv"
   `include "env.sv"
   `include "cpuWrSeq.sv"

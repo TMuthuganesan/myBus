@@ -2,11 +2,12 @@ class myAgnt extends uvm_agent;
 
   `uvm_component_utils (myAgnt)
   
-  myBusSeqr sqncr;
-  myBusDrvr drvr;
-  myBusMon  opMon;
-  myBusMon  ipMon;
-  myBusScb  scb;
+  myBusSeqr   sqncr;
+  myBusDrvr   drvr;
+  myBusMon    opMon;
+  myBusMon    ipMon;
+  myBusScb    scb;
+  myBusCovMon ipCovMon;
   
   virtual dutIntf.drvMp drvVif;
   virtual dutIntf.monMp opMonVif;
@@ -32,6 +33,7 @@ class myAgnt extends uvm_agent;
     this.opMon        = myBusMon::type_id::create("opMon",this);
     this.ipMon        = myBusMon::type_id::create("ipMon",this);
     this.scb          = myBusScb::type_id::create("scb",this);
+    this.ipCovMon     = myBusCovMon::type_id::create("ipCovMon",this);
     this.drvr.myVif   = drvVif;
     this.opMon.myVif  = opMonVif;
     this.ipMon.myVif  = ipMonVif;
@@ -49,5 +51,6 @@ class myAgnt extends uvm_agent;
     //this.sqncr.seq_item_export.connect (this.drvr.seq_item_port);    
     //this.scb.mbxOpMon2ScbFifo.analysis_export.connect (this.opMon.mbxMon2Scb);
     this.ipMon.mbxMon2Scb.connect (this.scb.mbxIpMon2ScbFifo.analysis_export);
+    this.ipMon.mbxMon2Scb.connect (this.ipCovMon.covMonFifo.analysis_export);
   endfunction
 endclass
